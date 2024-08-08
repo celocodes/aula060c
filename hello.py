@@ -73,8 +73,8 @@ def index():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.name.data).first()                
         if user is None:
-            user_role = Role(name=form.role.data);
-            user = User(username=form.name.data, role=user_role);
+            #user_role = Role(name=form.role.data);, role=user_role
+            user = User(username=form.name.data);
             db.session.add(user)
             db.session.commit()
             session['known'] = False
