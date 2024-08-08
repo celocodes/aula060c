@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+<link href="/static/login.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block page_content %}
+<div class="container">
+    <form class="form-signin" action="/login" method="POST">
+        {{ form.hidden_tag() }}
+        <h2 class="form-signin-heading">Login:</h1>
+        {{ form.email(class="input-block-level", placeholder="Nome ou e-mail") }}
+        {{ form.password(class="input-block-level", placeholder="Senha") }}
+        {{ form.submit(class="btn btn-large btn-primary") }}
+    </form>
+</div>
+<br>
+<p>The local date and time is {{ moment(current_time).format('LLL') }}.</p>
+<p>That was {{ moment(current_time).fromNow(refresh=True) }}.</p>
+{% endblock %}
