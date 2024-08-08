@@ -44,6 +44,7 @@ class User(db.Model):
 
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
+    role = SelectField('Role?', choices=[('Administrator', 'Administrator'), ('Moderator', 'Moderator'), ('User', 'User')])
     submit = SubmitField('Submit')
 
 
@@ -72,7 +73,7 @@ def index():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.name.data).first()                
         if user is None:
-            user_role = Role.query.filter_by(name='User').first();
+            user_role = Role(name=form.role.data);
             user = User(username=form.name.data, role=user_role);
             db.session.add(user)
             db.session.commit()
