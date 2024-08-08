@@ -44,7 +44,7 @@ class User(db.Model):
 
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
-    role = SelectField('Role?', choices=[('Administrator', 'Administrator'), ('User', 'User')]) #('Moderator', 'Moderator'),
+    role = SelectField('Role?', choices=[('Administrator', 'Administrator'), ('Moderator', 'Moderator'), ('User', 'User')])
     submit = SubmitField('Submit')
 
 
@@ -71,17 +71,22 @@ def index():
     print(user_all);
     print(role_all);
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()                
+        user = User.query.filter_by(username=form.name.data).first()
         if user is None:
-            user_role = Role(name=form.role.data);
-            user = User(username=form.name.data, role=user_role);
+            user_role = Role.query.filter_by(name=form.role.data).first()
+            if user_role is None:
+                user_role = Role(name=form.role.data)
+                db.session.add(user_role)
+                db.session.commit()
+            user = User(username=form.name.data, role=user_role)
             db.session.add(user)
             db.session.commit()
             session['known'] = False
         else:
             session['known'] = True
         session['name'] = form.name.data
+        session['role'] = form.role.data
         return redirect(url_for('index'))
     return render_template('index.html', form=form, name=session.get('name'),
                            known=session.get('known', False),
-                           user_all=user_all, role_all=role_all);
+                           user_all=user_all, roles=roles)
