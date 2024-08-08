@@ -17,7 +17,7 @@
 <h2>Relação de usuários cadastrados</h2>
 <table class="table">
     <thead>
-        <tr>
+        <tr>    
             <th>Nome do usuário</th>
             <th>Função</th>
         </tr>
@@ -27,6 +27,24 @@
         <tr>
             <td>{{ key.username }}</td>
             <td>{{ key.role.name }}</td>            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Relação de funções cadastradas</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Funções</th>
+            <th>Usuários</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key in role_all %}
+        <tr>
+            <td>{{ key.role.name }}</td>
+            <td>{{ 1. key.username }}</td>            
         </tr>
         {% endfor %}
     </tbody>
